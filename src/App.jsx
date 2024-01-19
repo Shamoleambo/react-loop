@@ -5,8 +5,11 @@ import AddTask from './components/AddTask'
 
 function App() {
   const [tasks, setTasks] = useState([])
+  const [showForm, setShowForm] = useState(false)
 
   const noTasks = <p>No Tasks</p>
+
+  const handleFormDisplay = () => setShowForm((prevState) => !prevState)
 
   const addTask = (text, day, reminder) => {
     setTasks((prevTasks) => {
@@ -35,8 +38,8 @@ function App() {
 
   return (
     <div className='container'>
-      <Header />
-      <AddTask onAdd={addTask} />
+      <Header isVisible={showForm} onShowForm={handleFormDisplay} />
+      {showForm && <AddTask onAdd={addTask} />}
       {tasks.length > 0 ? (
         <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
       ) : (
