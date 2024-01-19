@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
@@ -6,6 +6,17 @@ import AddTask from './components/AddTask'
 function App() {
   const [tasks, setTasks] = useState([])
   const [showForm, setShowForm] = useState(false)
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      const data = await fetch('http://localhost:5000/tasks')
+      const tasks = await data.json()
+
+      setTasks(tasks)
+    }
+
+    fetchTasks()
+  }, [])
 
   const noTasks = <p>No Tasks</p>
 
