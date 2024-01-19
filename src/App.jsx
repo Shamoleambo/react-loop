@@ -16,6 +16,8 @@ const taskList = [
 function App() {
   const [tasks, setTasks] = useState(taskList)
 
+  const noTasks = <p>No Tasks</p>
+
   const deleteTask = (id) => {
     setTasks((prevTasks) => {
       return prevTasks.filter((task) => task.id !== id)
@@ -25,7 +27,11 @@ function App() {
   return (
     <div className='container'>
       <Header />
-      <Tasks tasks={tasks} onDelete={deleteTask} />
+      {tasks.length > 0 ? (
+        <Tasks tasks={tasks} onDelete={deleteTask} />
+      ) : (
+        noTasks
+      )}
     </div>
   )
 }
