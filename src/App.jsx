@@ -3,6 +3,11 @@ import Header from './components/Header'
 import Tasks from './components/Tasks'
 import AddTask from './components/AddTask'
 
+const fetchSingleTask = async (id) => {
+  const data = await fetch(`http://localhost:5000/tasks/${id}`)
+  return await data.json()
+}
+
 function App() {
   const [tasks, setTasks] = useState([])
   const [showForm, setShowForm] = useState(false)
@@ -26,7 +31,9 @@ function App() {
     const task = { text, day, reminder }
     const res = await fetch(`http://localhost:5000/tasks`, {
       method: 'POST',
-      'Content-Type': 'application/json',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify(task)
     })
     const taskCreated = await res.json()
@@ -50,12 +57,14 @@ function App() {
   }
 
   const toggleReminder = async (id) => {
-    const updatedTask = tasks.filter((task) => task.id === id)[0]
-    updatedTask.reminder = !updatedTask.reminder
+    const singleTask = await fetchSingleTask(id)
+    const taskUpdate = { ...singleTask, reminder: !singleTask.reminder }
     const res = await fetch(`http://localhost:5000/tasks/${id}`, {
       method: 'PUT',
-      'Content-Type': 'application/json',
-      body: JSON.stringify(updatedTask)
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(taskUpdate)
     })
     const data = await res.json()
 
