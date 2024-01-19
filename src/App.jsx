@@ -19,6 +19,16 @@ function App() {
 
   const noTasks = <p>No Tasks</p>
 
+  const addTask = (text, day, reminder) => {
+    setTasks((prevTasks) => {
+      const updatedTasks = [...prevTasks]
+
+      const id = Math.floor(Math.random() * 1000)
+      updatedTasks.push({ id, text, day, reminder })
+      return updatedTasks
+    })
+  }
+
   const deleteTask = (id) => {
     setTasks((prevTasks) => {
       return prevTasks.filter((task) => task.id !== id)
@@ -37,7 +47,7 @@ function App() {
   return (
     <div className='container'>
       <Header />
-      <AddTask />
+      <AddTask onAdd={addTask} />
       {tasks.length > 0 ? (
         <Tasks tasks={tasks} onDelete={deleteTask} onToggle={toggleReminder} />
       ) : (
