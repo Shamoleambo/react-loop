@@ -32,7 +32,11 @@ function App() {
     })
   }
 
-  const deleteTask = (id) => {
+  const deleteTask = async (id) => {
+    fetch(`http://localhost:5000/tasks/${id}`, {
+      method: 'DELETE'
+    })
+
     setTasks((prevTasks) => {
       return prevTasks.filter((task) => task.id !== id)
     })
