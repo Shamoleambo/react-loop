@@ -22,12 +22,19 @@ function App() {
 
   const handleFormDisplay = () => setShowForm((prevState) => !prevState)
 
-  const addTask = (text, day, reminder) => {
+  const addTask = async (text, day, reminder) => {
+    const task = { text, day, reminder }
+    const res = await fetch(`http://localhost:5000/tasks`, {
+      method: 'POST',
+      'Content-Type': 'application/json',
+      body: JSON.stringify(task)
+    })
+    const taskCreated = await res.json()
+
     setTasks((prevTasks) => {
       const updatedTasks = [...prevTasks]
 
-      const id = Math.floor(Math.random() * 1000)
-      updatedTasks.push({ id, text, day, reminder })
+      updatedTasks.push({ id: taskCreated.id, text, day, reminder })
       return updatedTasks
     })
   }
